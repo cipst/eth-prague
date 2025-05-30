@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Home } from "./pages/home";
+import { MetamaskProvider } from "./lib/contexts/metamask";
 
 const router = createBrowserRouter([
 	{
@@ -34,6 +35,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
 	<StrictMode>
-		<RouterProvider router={router} />
+		<MetamaskProvider>
+			<RouterProvider router={router} />
+		</MetamaskProvider>
 	</StrictMode>
 );
