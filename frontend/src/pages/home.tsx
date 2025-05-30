@@ -7,8 +7,8 @@ export const Home = () => {
 		<>
 			<main className="h-full flex">
 				<Header />
-				<Sidebar className="pt-20" />
-				<div className="pt-20">
+				<Sidebar className="pt-24" />
+				<div className="pt-24">
 					<Outlet />
 				</div>
 			</main>
