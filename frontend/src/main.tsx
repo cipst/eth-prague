@@ -1,13 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
+import { Header } from "./components/ui/header";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: (
 			<>
-				<header>HEADER</header>
+				<Header />
 				<nav>NAVBAR</nav>
 				<Outlet />
 			</>
