@@ -6,6 +6,7 @@ import { MetamaskProvider } from "./lib/contexts/metamask";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { fetchChains } from "./lib/api/fetchChain";
+import { Dashboard } from "./pages/dashboard";
 
 const router = createBrowserRouter([
 	{
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				Component: () => <>Dashboard</>,
+				Component: Dashboard,
 			},
 			{
 				path: "bridge",
