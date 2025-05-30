@@ -5,4 +5,10 @@ export const API_CONFIG = {
 			CHAIN: (chainId: string) => `/chains/${chainId}`,
 		},
 	},
+	EXPLORER_API: {
+		FALLBACK_URL: "https://evm.flowscan.io",
+		ENDPOINTS: {
+			ADDRESS_TOKEN_BALANCES: (hash: string) => `/api/v2/addresses/${hash}/token-balances`,
+		},
+	},
 } as const;
