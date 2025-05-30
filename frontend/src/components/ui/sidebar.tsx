@@ -7,6 +7,8 @@ import { useChains } from "@/hooks/useChains";
 import { Skeleton } from "./skeleton";
 import { SUPPORTED_CHAINS_ID } from "@/config/chain";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { VAULT_INFO } from "@/config/vault";
+import { AddressIcon } from "./address-icon";
 
 const links = [
 	{
@@ -43,7 +45,12 @@ export const Sidebar = ({ className }: { className?: string }) => {
 
 	return (
 		<nav className={cn("border w-xs h-full", className)}>
-			<section className="w-full h-60 bg-gray-500 flex items-center justify-center">COMPANY WALLET</section>
+			<section className="w-full h-60 bg-gray-500 flex items-center justify-center">
+				<AddressIcon />
+				<span>
+					{VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}
+				</span>
+			</section>
 			<section>
 				{chains ? (
 					<Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-full flex-col gap-2 mt-4 mb-5">

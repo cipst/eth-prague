@@ -33,8 +33,8 @@ const metamask = new MetaMaskSDK({
 	checkInstallationImmediately: true,
 	checkInstallationOnAllCalls: true,
 	logging: {
-		developerMode: true,
-		sdk: true,
+		developerMode: false,
+		sdk: false,
 	},
 });
 
@@ -87,6 +87,7 @@ export function MetamaskProvider({ children }: MetamaskProviderProps) {
 			if ((accounts as string[]).length === 0) {
 				setAccount("");
 			} else {
+				console.log("Account connected: ", (accounts as string[])[0]);
 				setAccount((accounts as string[])[0]);
 			}
 		});
