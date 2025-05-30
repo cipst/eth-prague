@@ -1,22 +1,16 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router";
-import { Header } from "./components/ui/header";
+import { createBrowserRouter, RouterProvider } from "react-router";
+import { Home } from "./pages/home";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: (
-			<>
-				<Header />
-				<nav>NAVBAR</nav>
-				<Outlet />
-			</>
-		),
+		element: <Home />,
 		children: [
 			{
 				index: true,
-				Component: () => <>Home</>,
+				Component: () => <>Dashboard</>,
 			},
 			{
 				path: "bridge",
