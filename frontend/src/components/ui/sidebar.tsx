@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { BanknoteArrowUpIcon, GalleryVerticalEndIcon, HandCoinsIcon, HomeIcon, WaypointsIcon } from "lucide-react";
+import { BanknoteArrowUpIcon, HandCoinsIcon, HomeIcon, WaypointsIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { Collapsible, CollapsibleContent } from "./collapsible";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { SUPPORTED_CHAINS_ID } from "@/config/chain";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { VAULT_INFO } from "@/config/vault";
 import { AddressIcon } from "./address-icon";
+import { TransactionHistoryButton } from "./transaction-history-button";
 
 const links = [
 	{
@@ -20,11 +21,6 @@ const links = [
 		title: "Bridge",
 		url: "/bridge",
 		icon: WaypointsIcon,
-	},
-	{
-		title: "Transaction History",
-		url: "/history",
-		icon: GalleryVerticalEndIcon,
 	},
 	{
 		title: "Dividends",
@@ -51,9 +47,9 @@ export const Sidebar = ({ className }: { className?: string }) => {
 					{VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}
 				</span>
 			</section>
-			<section>
+			<section className="flex flex-col gap-5 px-4">
 				{chains ? (
-					<Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-full flex-col gap-2 mt-4 mb-5">
+					<Collapsible open={isOpen} onOpenChange={setIsOpen} className="flex w-full flex-col gap-2 mt-4">
 						<div className="flex items-center justify-between gap-4 px-4">
 							<h4 className="text-md font-semibold flex items-center gap-3">
 								<Avatar>
@@ -80,17 +76,22 @@ export const Sidebar = ({ className }: { className?: string }) => {
 				) : (
 					<Skeleton className="h-5 w-full" />
 				)}
-				{links.map((item) => (
-					<Link
-						to={item.url}
-						key={item.title}
-						className={cn(
-							"hover:bg-gray-700 hover:scale-105 hover:text-white p-2 transition-all rounded-md flex items-center text-lg border border-grey-500 mx-4 gap-3 font-semibold my-2",
-							pathname === item.url && "bg-gray-700 text-white"
-						)}>
-						<item.icon className="w-7 h-7" /> <span>{item.title}</span>
-					</Link>
-				))}
+				<div>
+					{links.map((item) => (
+						<Link
+							to={item.url}
+							key={item.title}
+							className={cn(
+								"hover:bg-gray-700 hover:scale-105 hover:text-white p-2 transition-all rounded-md flex items-center text-lg border border-grey-500 gap-3 font-semibold my-4",
+								pathname === item.url && "bg-gray-700 text-white"
+							)}>
+							<item.icon className="w-7 h-7" /> <span>{item.title}</span>
+						</Link>
+					))}
+				</div>
+			</section>
+			<section className="pt-32 block">
+				<TransactionHistoryButton className="block mb-6 text-md mx-auto hover:scale-105" />
 			</section>
 		</nav>
 	);
