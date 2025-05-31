@@ -5,6 +5,8 @@ import { API_CONFIG } from "@/config/api";
 export const fetchTokenBalances = async (chains: ChainData[], hash: string): Promise<TokenBalance[]> => {
 	let res: TokenBalance[] = [];
 
+	console.log("--- fetchTokenBalance() ---");
+
 	const promises: Promise<Response>[] = [];
 
 	for await (const chain of chains) {
@@ -13,9 +15,9 @@ export const fetchTokenBalances = async (chains: ChainData[], hash: string): Pro
 
 	const responses = await Promise.all(promises);
 
-	const results = await Promise.all<TokenBalance>(responses.map((r) => r.json()));
+	const results = await Promise.all<TokenBalance[]>(responses.map((r) => r.json()));
 
-	res = results;
+	res = results.flat();
 
 	return res;
 };
