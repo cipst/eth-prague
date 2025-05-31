@@ -8,6 +8,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
 import type { TokenBalance } from "@/types/blockchain-data";
+import { MeritsIcon } from "../ui/MeritsIcon";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -69,8 +70,11 @@ export const BalanceSheet = () => {
 			<CardHeader>
 				<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
 				{/* <CardDescription>Card Description</CardDescription> */}
-				<CardAction>
-					<Button><VlayerButton/></Button>
+				<CardAction className="flex items-center gap-3">
+					<Button>
+						<VlayerButton />
+					</Button>
+					<MeritsIcon side="bottom" />
 				</CardAction>
 			</CardHeader>
 			<CardContent className="flex gap-10">
