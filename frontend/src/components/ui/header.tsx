@@ -7,10 +7,12 @@ import { Button } from "./button";
 import { useState } from "react";
 import { VAULT_INFO } from "@/config/vault";
 import { useAccount } from "wagmi";
+import { useMerits } from "@/hooks/useMerits";
 
 export const Header = ({ className }: { className?: string }) => {
 	const { address: accountAddress } = useAccount();
 	const [searchQuery, setSearchQuery] = useState("");
+	const { userBalance } = useMerits(accountAddress);
 
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -59,6 +61,7 @@ export const Header = ({ className }: { className?: string }) => {
 					</Button>
 				</form>
 			</div>
+			<div>{userBalance}</div>
 			<div>
 				<MetamaskButton />
 			</div>
