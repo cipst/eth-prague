@@ -30,7 +30,11 @@ export const Header = ({ className }: { className?: string }) => {
 	};
 
 	return (
-		<header className={cn("flex fixed w-full items-center justify-between h-24 px-4 py-3 gap-10 bg-white border-b border-b-gray-500", className)}>
+		<header
+			className={cn(
+				"flex z-50 shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.17)] fixed w-full items-center justify-between h-24 px-4 py-3 gap-10 bg-white border-b border-b-gray-500",
+				className
+			)}>
 			<h1 className="font-bold uppercase text-5xl">DeCom</h1>
 			<div className="flex gap-2 items-center h-full">
 				{accountAddress && (

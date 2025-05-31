@@ -67,8 +67,11 @@ export const Sidebar = ({ className }: { className?: string }) => {
 							<CollapsibleContent className="flex flex-col gap-2">
 								{chains.slice(1).map((chain) => (
 									<div key={`tab-trigger-${chain.chainId}`} className="rounded-md border px-4 py-2 font-mono text-sm">
+										<Avatar>
+											<AvatarImage src={chain.explorerLogo} />
+											<AvatarFallback>{SUPPORTED_CHAINS_ID[chain.chainId].slice(0, 1).toUpperCase()}</AvatarFallback>
+										</Avatar>
 										{SUPPORTED_CHAINS_ID[chain.chainId]}
-										{chain.explorerLogo}
 									</div>
 								))}
 							</CollapsibleContent>
