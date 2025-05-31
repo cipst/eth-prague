@@ -6,7 +6,7 @@ interface Args {
 	toEid: EndpointId;
 }
 
-task("deposit", "Deposit asset into vault")
+task("setOFTrouter", "setOFTrouter asset into vault")
 	.addParam("tokenERC20", "", undefined, types.string)
 	.setAction(async (taskArgs: Args, { ethers, deployments }) => {
 		const vaultDeployment = await deployments.get("DecomToken");
@@ -25,11 +25,9 @@ task("deposit", "Deposit asset into vault")
 
 		let trx = await token.approve(vaultContract.address, amount);
 
-		console.log(await token.balanceOf("0x4992D577c204027be30B776C3357094c4b582CeE"));
-
 		let receipt = await trx.wait();
 		console.log(`Vault contract approved`);
-		trx = await vaultContract.connect(signer).deposit(amount);
+		trx = await vaultContract.connect(signer).setOftRouter("0x4992D577c204027be30B776C3357094c4b582CeE");
 		receipt = await trx.wait();
 
 		console.log(receipt);
