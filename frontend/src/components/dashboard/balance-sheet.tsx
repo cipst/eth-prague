@@ -8,6 +8,9 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
 import type { TokenBalance } from "@/types/blockchain-data";
+import { useBalance } from "@/hooks/use-vlayer";
+import { useAccount } from "wagmi";
+import BinanceLogo from "@/assets/logoBinance.png";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -89,9 +92,13 @@ type AssetsSectionProps = {
 	balances: TokenBalance[];
 };
 
-const AssetsSection = ({ balances }: AssetsSectionProps) => (
-	<section>
+const AssetsSection = ({ balances }: AssetsSectionProps) => {
+	const { address } = useAccount();
+	const { data:balance } = useBalance(address as `0x${string}`);
+	
+	return (<section>
 		<span className="font-mono text-2xl font-semibold">ASSETS</span>
+		
 		<Table className="">
 			<TableCaption>
 				A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s assets
@@ -105,6 +112,17 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => (
 				</TableRow>
 			</TableHeader>
 			<TableBody>
+				<TableRow key={'binance'}>
+						<TableCell>
+							<Avatar>
+								<AvatarImage src={BinanceLogo} />
+								<AvatarFallback>BINANCE</AvatarFallback>
+							</Avatar>
+						</TableCell>
+						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{'Binance Balance'}</TableCell>
+						<TableCell className="">{balance} </TableCell>
+						<TableCell className="text-right">???</TableCell>
+					</TableRow>
 				{balances.map((balance) => (
 					<TableRow key={balance.token.name}>
 						<TableCell>
@@ -120,8 +138,8 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => (
 				))}
 			</TableBody>
 		</Table>
-	</section>
-);
+	</section>)
+};
 
 type EquitySectionProps = {
 	balances: TokenBalance[];
