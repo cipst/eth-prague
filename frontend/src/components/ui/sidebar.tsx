@@ -22,11 +22,7 @@ const links = [
 		url: "/bridge",
 		icon: WaypointsIcon,
 	},
-	{
-		title: "Dividends",
-		url: "/dividends",
-		icon: HandCoinsIcon,
-	},
+	
 	{
 		title: "Fundraise",
 		url: "/fundraise",

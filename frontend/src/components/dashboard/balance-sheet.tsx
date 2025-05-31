@@ -8,7 +8,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
 import type { TokenBalance } from "@/types/blockchain-data";
-import { useBalance } from "@/hooks/use-vlayer";
+import { useBalance, useVlayer ,useBalanceCreatedAt} from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
 
@@ -16,6 +16,10 @@ export const BalanceSheet = () => {
 	const { data: chains } = useChains();
 	const { data: balances, error, isLoading, isError, isFetching, isPending } = useTokenBalances(chains);
 
+const { address } = useAccount();
+	const {status} = useVlayer();
+
+	const { data: balanceCreatedAt } = useBalanceCreatedAt(address as `0x${string}`, status);
 	if (isLoading || isFetching || isPending) {
 		return (
 			<Card className="w-3xl">
@@ -66,7 +70,6 @@ export const BalanceSheet = () => {
 	if (isError) {
 		return <div>{error.message}</div>;
 	}
-
 	return (
 		<Card className="w-max">
 			<CardHeader>
@@ -74,6 +77,17 @@ export const BalanceSheet = () => {
 				{/* <CardDescription>Card Description</CardDescription> */}
 				<CardAction>
 					<Button><VlayerButton/></Button>
+					<p className="text-sm text-gray-500">
+					  {balanceCreatedAt ? (
+						<>
+						  {'Last updated: ' + new Date(Number(balanceCreatedAt) * 1000).toLocaleDateString()}
+						  <br />
+						  at {new Date(Number(balanceCreatedAt) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+						</>
+					  ) : (
+						'please verify'
+					  )}
+					</p>
 				</CardAction>
 			</CardHeader>
 			<CardContent className="flex gap-10">
@@ -94,7 +108,9 @@ type AssetsSectionProps = {
 
 const AssetsSection = ({ balances }: AssetsSectionProps) => {
 	const { address } = useAccount();
-	const { data:balance } = useBalance(address as `0x${string}`);
+	const {status} = useVlayer();
+
+	const { data: balance } = useBalance(address as `0x${string}`, status);
 	
 	return (<section>
 		<span className="font-mono text-2xl font-semibold">ASSETS</span>
@@ -120,7 +136,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 							</Avatar>
 						</TableCell>
 						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{'Binance Balance'}</TableCell>
-						<TableCell className="">{balance} </TableCell>
+						<TableCell className="">{balance ?? 'Waiting to be verified'} </TableCell>
 						<TableCell className="text-right">???</TableCell>
 					</TableRow>
 				{balances.map((balance) => (
