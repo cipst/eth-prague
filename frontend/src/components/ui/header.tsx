@@ -4,10 +4,11 @@ import { cn } from "@/lib/utils";
 import { MetamaskButton } from "./metamask-button";
 import { Input } from "./input";
 import { Button } from "./button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { VAULT_INFO } from "@/config/vault";
 import { useAccount } from "wagmi";
 import { VlayerButton } from "./vlayer-prover-button";
+import { useBalance } from "@/hooks/use-vlayer";
 
 
 export const Header = ({ className }: { className?: string }) => {
@@ -32,6 +33,11 @@ export const Header = ({ className }: { className?: string }) => {
 		}
 	};
 
+	const { data:balance } = useBalance(accountAddress as `0x${string}`);
+	useEffect(() => {
+    
+    console.log("Balance for accountAddress", accountAddress, "is", balance);
+  },[balance,accountAddress]);
 	return (
 		<header
 			className={cn(

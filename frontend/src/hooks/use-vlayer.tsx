@@ -12,6 +12,9 @@ import type { Abi, ContractFunctionName } from "viem";
 import { startPage, expectUrl, notarize } from "@vlayer/sdk/web_proof";
 import { UseChainError, WebProofError } from "@/utils/errors";
 import webProofProver from "../../../vlayerContracts/out/WebProofProver.sol/WebProofProver";
+import WebProofVerifier from "../../../vlayerContracts/out/WebProofVerifier.sol/WebProofVerifier";
+import { useReadContract, useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+
 
 const webProofConfig: WebProofConfig<Abi, string> = {
   proverCallCommitment: {
@@ -60,7 +63,7 @@ export const useVlayer = () => {
 
   if (webProofError) {
     console.error("WebProof Error:", webProofError);
-    throw new WebProofError(webProofError.message);
+    // throw new WebProofError(webProofError.message);
   }
 
   const { chain, error: chainError } = useChain(
@@ -92,7 +95,7 @@ export const useVlayer = () => {
   } = useCallProver(vlayerProverConfig);
 
   if (callProverError) {
-    throw callProverError;
+    // throw callProverError;
   }
 
   const {
@@ -122,6 +125,52 @@ export const useVlayer = () => {
     }
   }, [JSON.stringify(result)]);
 
+  const [mintedHandle, setMintedHandle] = useState<string | null>(null);
+  const [isMinting, setIsMinting] = useState(false);
+  // Using mintingError state to throw error in useEffect because ErrorBoundary does not catch errors from async functions like handleMint
+  // const [mintingError, setMintingError] = useState<Error | null>(null);
+  const [proverResult] = useLocalStorage("proverResult", "");
+  // const { address } = useAccount();
+  // const { data: balance } = useBalance({ address });
+  const { writeContract, data: txHash, error: writeContractError } = useWriteContract();
+  const { status } = useWaitForTransactionReceipt({
+    hash: txHash,
+  });
+
+  useEffect(() => {
+    if (proverResult) {
+      const result = JSON.parse(proverResult) as Parameters<
+        typeof writeContract
+      >[0]["args"];
+      if (!result || !Array.isArray(result) || typeof result[1] !== "string") {
+        throw new Error(
+          "Serialized prover result from local storage is invalid",
+        );
+      }
+      setMintedHandle(result[1]);
+    }
+  }, [proverResult]);
+
+  const handleMint = async () => {
+    setIsMinting(true);
+    if (!proverResult) {
+      return;
+    }
+
+    const proofData = JSON.parse(proverResult) as Parameters<
+      typeof writeContract
+    >[0]["args"];
+    console.log("proofData", proofData);
+    const writeContractArgs: Parameters<typeof writeContract>[0] = {
+      address: import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
+      abi: WebProofVerifier.abi,
+      functionName: "verify",
+      args: proofData,
+    };
+
+    writeContract(writeContractArgs);
+  };
+
   return {
     requestWebProof,
     webProof,
@@ -132,6 +181,20 @@ export const useVlayer = () => {
     isWebProofPending,
     callProver,
     result,
-    error,
+    error: writeContractError,
+    handleMint,
+    isMinting,
+    mintedHandle,
+    setMintedHandle,
+    status
   };
+};
+
+export const useBalance = (address: `0x${string}`) => {
+  return useReadContract({
+    address: import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
+    abi: WebProofVerifier.abi,
+    functionName: "balances",
+    args: [address],
+  });
 };
