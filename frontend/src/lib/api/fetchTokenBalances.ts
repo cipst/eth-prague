@@ -3,7 +3,7 @@ import type { ChainData } from "./fetchChain";
 import { API_CONFIG } from "@/config/api";
 
 export const fetchTokenBalances = async (chains: ChainData[], hash: string): Promise<TokenBalance[]> => {
-	let res: TokenBalance[] = [];
+	let balances: TokenBalance[] = [];
 
 	console.log("--- fetchTokenBalance() ---");
 
@@ -17,7 +17,11 @@ export const fetchTokenBalances = async (chains: ChainData[], hash: string): Pro
 
 	const results = await Promise.all<TokenBalance[]>(responses.map((r) => r.json()));
 
-	res = results.flat();
+	balances = results.flat();
 
-	return res;
+	//TODO
+	//IMPORTANT
+	//Add USDT price to every asset in the balance via oracles
+
+	return balances;
 };
