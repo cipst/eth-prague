@@ -15,6 +15,7 @@ import { Dashboard } from "./pages/dashboard";
 import { ProofProvider } from "@vlayer/react";
 import { getChainSpecs } from "@vlayer/sdk";
 import { TransactionPopupProvider } from "@blockscout/app-sdk";
+import { Bridge } from "./pages/bridge";
 
 const router = createBrowserRouter([
 	{
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "bridge",
-				Component: () => <>Bridge</>,
+				Component: Bridge
 			},
 			{
 				path: "dividends",
