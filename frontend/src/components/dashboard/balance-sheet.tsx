@@ -8,9 +8,10 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
 import type { TokenBalance } from "@/types/blockchain-data";
-import { useBalance } from "@/hooks/use-vlayer";
+import { useBalance, useVlayer } from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
+import { use } from "react";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -94,7 +95,9 @@ type AssetsSectionProps = {
 
 const AssetsSection = ({ balances }: AssetsSectionProps) => {
 	const { address } = useAccount();
-	const { data:balance } = useBalance(address as `0x${string}`);
+	const {status} = useVlayer();
+
+	const { data: balance } = useBalance(address as `0x${string}`, status);
 	
 	return (<section>
 		<span className="font-mono text-2xl font-semibold">ASSETS</span>

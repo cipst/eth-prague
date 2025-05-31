@@ -190,11 +190,17 @@ export const useVlayer = () => {
   };
 };
 
-export const useBalance = (address: `0x${string}`) => {
-  return useReadContract({
+export const useBalance = (address: `0x${string}`, refetchTrigger?: any) => {
+  const contract = useReadContract({
     address: import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
     abi: WebProofVerifier.abi,
     functionName: "balances",
     args: [address],
   });
+
+  // Refetch when refetchTrigger changes
+  useEffect(() => {
+    if (contract.refetch) contract.refetch();
+  }, [refetchTrigger]);
+  return contract;
 };
