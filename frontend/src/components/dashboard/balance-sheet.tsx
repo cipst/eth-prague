@@ -6,6 +6,8 @@ import { NETWORK_STATS_REFETCH_INTERVAL } from "@/lib/api/constants";
 import { Skeleton } from "../ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { VAULT_INFO } from "@/config/vault";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -40,35 +42,48 @@ export const BalanceSheet = () => {
 	}
 
 	return (
-		<div className="flex flex-wrap items-center justify-center gap-5">
-			<Card className="w-xl">
-				<CardHeader>
-					<CardTitle>Balance Sheet</CardTitle>
-					{/* <CardDescription>Card Description</CardDescription> */}
-					<CardAction>
-						<Button>Update CEX balance</Button>
-					</CardAction>
-				</CardHeader>
-				<CardContent></CardContent>
-				<CardFooter>
-					<p>Card Footer</p>
-				</CardFooter>
-			</Card>
-			<Card className="w-xl">
-				<CardHeader>
-					<CardTitle>Income Statement</CardTitle>
-					{/* <CardDescription>Card Description</CardDescription> */}
-					<CardAction>
-						<Button>Update</Button>
-					</CardAction>
-				</CardHeader>
-				<CardContent>
-					<p>Card Content</p>
-				</CardContent>
-				<CardFooter>
-					<p>Card Footer</p>
-				</CardFooter>
-			</Card>
-		</div>
+		<Card className="w-3xl">
+			<CardHeader>
+				<CardTitle className="font-mono uppercase text-2xl">Balance Sheet</CardTitle>
+				{/* <CardDescription>Card Description</CardDescription> */}
+				<CardAction>
+					<Button>Update CEX balance</Button>
+				</CardAction>
+			</CardHeader>
+			<CardContent>
+				<Table>
+					<TableCaption>
+						A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s tokens
+					</TableCaption>
+					<TableHeader>
+						<TableRow>
+							<TableHead></TableHead>
+							<TableHead className="w-[100px]"></TableHead>
+							<TableHead className="">Amount</TableHead>
+							<TableHead className="text-right">USDT</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
+						{data &&
+							data.map((balance) => (
+								<TableRow key={balance.token.name}>
+									<TableCell>
+										<Avatar>
+											<AvatarImage src={balance.token.icon_url} />
+											<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+										</Avatar>
+									</TableCell>
+									<TableCell className="font-medium">{balance.token.name}</TableCell>
+									<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
+									<TableCell className="text-right">---</TableCell>
+								</TableRow>
+							))}
+					</TableBody>
+				</Table>
+			</CardContent>
+			<CardFooter>
+				<p>Card Footer</p>
+			</CardFooter>
+		</Card>
 	);
 };
