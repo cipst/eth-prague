@@ -8,13 +8,13 @@ import {Verifier} from "vlayer-0.1.0/Verifier.sol";
 contract WebProofVerifier is Verifier {
     address public prover;
 
-    mapping(address => uint256) public balances;
+    mapping(address => string) public balances;
 
     constructor(address _prover) {
         prover = _prover;
     }
 
-    function verify(Proof calldata proof, address account, uint256 balance)
+    function verify(Proof calldata proof, string memory balance, address account)
         public
         onlyVerified(prover, WebProofProver.main.selector)
     {

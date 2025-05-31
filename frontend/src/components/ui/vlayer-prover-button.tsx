@@ -1,5 +1,5 @@
 import { useAccount } from "wagmi";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useVlayer } from "@/hooks/use-vlayer";
 
 
@@ -7,7 +7,6 @@ export const VlayerButton = ({ className }: { className?: string }) => {
     
   const { address } = useAccount();
   const [disabled, setDisabled] = useState(false);
-  const modalRef = useRef<HTMLDialogElement>(null);
 
   const {
     requestWebProof,
@@ -17,11 +16,20 @@ export const VlayerButton = ({ className }: { className?: string }) => {
     isCallProverIdle,
     result,
     error,
+    handleMint
   } = useVlayer();
 
   useEffect(() => {
+    console.log('web proof ', webProof, 'isCallProverIdle ', isCallProverIdle);
+    // Automatically call the prover if webProof is available and the prover is idle
+    // This is useful for testing purposes, but you might want to remove it in production
+    try{
     if (webProof && isCallProverIdle) {
-      void callProver([webProof, address]);
+        console.log("Calling prover with webProof and address:", webProof, address);
+      callProver([webProof, address]);
+    }
+}catch (e) {
+    console.error("Error calling prover:", e);
     }
   }, [webProof, address, callProver, isCallProverIdle]);
 
@@ -29,13 +37,11 @@ export const VlayerButton = ({ className }: { className?: string }) => {
     console.log("Proving result:", result);
   }, [result]);
 
-  useEffect(() => {
-    modalRef.current?.showModal();
-  }, []);
+ 
 
   useEffect(() => {
     if (error) {
-      throw error;
+    //   throw error;
     }
   }, [error]);
 
@@ -51,6 +57,14 @@ export const VlayerButton = ({ className }: { className?: string }) => {
         >
           {isPending ? "Proving in progress..." : "Update CEX balance"}
         </button>
+         {webProof && (
+            <button
+                className="mt-4"
+                onClick={() => handleMint()}
+            >
+                Mint
+            </button>
+        )}
       </div>
     );
 };
