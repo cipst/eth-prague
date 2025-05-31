@@ -6,6 +6,7 @@ import { useMetamask } from "@/lib/contexts/metamask";
 import { Input } from "./input";
 import { Button } from "./button";
 import { useState } from "react";
+import { VAULT_INFO } from "@/config/vault";
 
 export const Header = ({ className }: { className?: string }) => {
 	const { accountAddress } = useMetamask();
@@ -39,8 +40,8 @@ export const Header = ({ className }: { className?: string }) => {
 			<div className="flex gap-2 items-center h-full">
 				{accountAddress && (
 					<>
-						<h3 className="cursor-pointer group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-sm font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50">
-							My Company
+						<h3 className="cursor-pointer group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50">
+							{VAULT_INFO.company_name}
 						</h3>
 						<Separator orientation="vertical" className="bg-black data-[orientation=vertical]:h-10" />
 					</>
