@@ -1,27 +1,20 @@
-import { fetchTokenBalances } from "@/lib/api/fetchTokenBalances";
 import { Button } from "../ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { useChains } from "@/hooks/useChains";
-import { NETWORK_STATS_REFETCH_INTERVAL } from "@/lib/api/constants";
 import { Skeleton } from "../ui/skeleton";
-import { useQuery } from "@tanstack/react-query";
 import { VAULT_INFO } from "@/config/vault";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useTokenBalances } from "@/hooks/useTokenBalances";
+import type { TokenBalance } from "@/types/blockchain-data";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
-	const { data, error, isLoading, isError, isFetching, isPending } = useQuery({
-		queryKey: ["balance-sheet"],
-		queryFn: async () => fetchTokenBalances(chains!, VAULT_INFO.address),
-		staleTime: 10 * 1000,
-		refetchInterval: NETWORK_STATS_REFETCH_INTERVAL,
-		enabled: !!chains,
-	});
+	const { data: balances, error, isLoading, isError, isFetching, isPending } = useTokenBalances(chains);
 
 	if (isLoading || isFetching || isPending) {
 		return (
-			<Card className="w-xl">
+			<Card className="w-3xl">
 				<CardHeader>
 					<CardTitle>Balance Sheet</CardTitle>
 					{/* <CardDescription>Card Description</CardDescription> */}
@@ -29,10 +22,39 @@ export const BalanceSheet = () => {
 						<Skeleton className="w-[200px] h-6" />
 					</CardAction>
 				</CardHeader>
-				<CardContent></CardContent>
-				<CardFooter>
-					<p>Card Footer</p>
-				</CardFooter>
+				<CardContent>
+					<Table>
+						<TableCaption>
+							A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s tokens
+						</TableCaption>
+						<TableHeader>
+							<TableRow>
+								<TableHead></TableHead>
+								<TableHead className="w-[100px]"></TableHead>
+								<TableHead className="">Amount</TableHead>
+								<TableHead className="text-right">USDT</TableHead>
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{Array.from({ length: 5 }).map((_, i) => (
+								<TableRow key={`skeleton-token-balances-${i}`}>
+									<TableCell className="">
+										<Skeleton className="rounded-full w-8 h-8" />
+									</TableCell>
+									<TableCell className="">
+										<Skeleton className="w-2xs h-5 mr-auto" />
+									</TableCell>
+									<TableCell className="">
+										<Skeleton className="w-4xs h-4" />
+									</TableCell>
+									<TableCell className="text-right">
+										<Skeleton className="w-4xs h-4" />
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</CardContent>
 			</Card>
 		);
 	}
@@ -42,48 +64,97 @@ export const BalanceSheet = () => {
 	}
 
 	return (
-		<Card className="w-3xl">
+		<Card className="w-max">
 			<CardHeader>
-				<CardTitle className="font-mono uppercase text-2xl">Balance Sheet</CardTitle>
+				<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
 				{/* <CardDescription>Card Description</CardDescription> */}
 				<CardAction>
 					<Button>Update CEX balance</Button>
 				</CardAction>
 			</CardHeader>
-			<CardContent>
-				<Table>
-					<TableCaption>
-						A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s tokens
-					</TableCaption>
-					<TableHeader>
-						<TableRow>
-							<TableHead></TableHead>
-							<TableHead className="w-[100px]"></TableHead>
-							<TableHead className="">Amount</TableHead>
-							<TableHead className="text-right">USDT</TableHead>
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{data &&
-							data.map((balance) => (
-								<TableRow key={balance.token.name}>
-									<TableCell>
-										<Avatar>
-											<AvatarImage src={balance.token.icon_url} />
-											<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-										</Avatar>
-									</TableCell>
-									<TableCell className="font-medium">{balance.token.name}</TableCell>
-									<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
-									<TableCell className="text-right">---</TableCell>
-								</TableRow>
-							))}
-					</TableBody>
-				</Table>
+			<CardContent className="flex gap-10">
+				<AssetsSection balances={balances} />
+
+				<EquitySection balances={balances} />
 			</CardContent>
 			<CardFooter>
 				<p>Card Footer</p>
 			</CardFooter>
 		</Card>
+	);
+};
+
+type AssetsSectionProps = {
+	balances: TokenBalance[];
+};
+
+const AssetsSection = ({ balances }: AssetsSectionProps) => (
+	<section>
+		<span className="font-mono text-2xl font-semibold">ASSETS</span>
+		<Table className="">
+			<TableCaption>
+				A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s assets
+			</TableCaption>
+			<TableHeader>
+				<TableRow>
+					<TableHead></TableHead>
+					<TableHead className=""></TableHead>
+					<TableHead className="">Amount</TableHead>
+					<TableHead className="text-right">USDT</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				{balances.map((balance) => (
+					<TableRow key={balance.token.name}>
+						<TableCell>
+							<Avatar>
+								<AvatarImage src={balance.token.icon_url} />
+								<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+							</Avatar>
+						</TableCell>
+						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{balance.token.name}</TableCell>
+						<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
+						<TableCell className="text-right">???</TableCell>
+					</TableRow>
+				))}
+			</TableBody>
+		</Table>
+	</section>
+);
+
+type EquitySectionProps = {
+	balances: TokenBalance[];
+};
+
+const EquitySection = ({ balances }: EquitySectionProps) => {
+	const totalShares = 1;
+	const totalAssetsValue = 1;
+
+	return (
+		<section className="min-w-sm">
+			<span className="font-mono text-2xl font-semibold">EQUITY</span>
+			<Table>
+				<TableHeader>
+					<TableRow>
+						<TableHead className="w-[100px]"></TableHead>
+						<TableHead className="text-right"></TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+						<TableCell className="font-semibold text-lg">Total shares</TableCell>
+						<TableCell className="text-right">???</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell className="font-semibold text-lg">Total assets value</TableCell>
+						<TableCell className="text-right">???</TableCell>
+					</TableRow>
+					<TableRow>
+						<TableCell className="font-semibold text-lg">Book share value</TableCell>
+						<TableCell className="text-right">{totalAssetsValue / totalShares}</TableCell>
+					</TableRow>
+				</TableBody>
+			</Table>
+		</section>
 	);
 };
