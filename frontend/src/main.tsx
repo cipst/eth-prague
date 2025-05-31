@@ -16,6 +16,7 @@ import { ProofProvider } from "@vlayer/react";
 import { getChainSpecs } from "@vlayer/sdk";
 import { TransactionPopupProvider } from "@blockscout/app-sdk";
 import { Bridge } from "./pages/bridge";
+import { Fundraise } from "./pages/Fundraise";
 
 const router = createBrowserRouter([
 	{
@@ -36,7 +37,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: "fundraise",
-				Component: () => <>Fundraise</>,
+				Component: Fundraise
 			},
 		],
 	},
