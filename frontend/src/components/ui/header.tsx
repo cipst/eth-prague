@@ -10,7 +10,6 @@ import { useAccount } from "wagmi";
 import { VlayerButton } from "./vlayer-prover-button";
 import { useBalance } from "@/hooks/use-vlayer";
 
-
 export const Header = ({ className }: { className?: string }) => {
 	const { address: accountAddress } = useAccount();
 	const [searchQuery, setSearchQuery] = useState("");
@@ -66,9 +65,6 @@ export const Header = ({ className }: { className?: string }) => {
 						Search
 					</Button>
 				</form>
-			</div>
-			<div>
-				<VlayerButton className="mt-7 flex justify-center flex-col items-center" />
 			</div>
 			<div>
 				<MetamaskButton />
