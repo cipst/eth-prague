@@ -6,6 +6,7 @@ import { Input } from "./input";
 import { Button } from "./button";
 import { useState } from "react";
 import { useAccount } from "wagmi";
+import { VlayerButton } from "./vlayer-prover-button";
 
 
 export const Header = ({ className }: { className?: string }) => {
@@ -54,6 +55,9 @@ export const Header = ({ className }: { className?: string }) => {
 						Search
 					</Button>
 				</form>
+			</div>
+			<div>
+				<VlayerButton className="mt-7 flex justify-center flex-col items-center" />
 			</div>
 			<div>
 				<MetamaskButton />
