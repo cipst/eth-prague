@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Home } from "./pages/home";
 import { WagmiProvider, http, createConfig } from "wagmi";
-import { baseSepolia, sepolia, optimismSepolia, foundry } from "wagmi/chains";
+import { baseSepolia, sepolia, optimismSepolia, foundry, avalancheFuji} from "wagmi/chains";
 import { metaMask } from "wagmi/connectors";
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
@@ -31,10 +31,7 @@ const router = createBrowserRouter([
 				path: "bridge",
 				Component: Bridge
 			},
-			{
-				path: "dividends",
-				Component: () => <>Pay dividends</>,
-			},
+			
 			{
 				path: "fundraise",
 				Component: Fundraise
@@ -53,13 +50,14 @@ queryClient.prefetchQuery({
 });
 
 const wagmiConfig = createConfig({
-	chains: [baseSepolia, sepolia, optimismSepolia, foundry],
+	chains: [baseSepolia, sepolia, optimismSepolia, foundry,avalancheFuji],
 	connectors: [metaMask()],
 	transports: {
 		[baseSepolia.id]: http(),
 		[sepolia.id]: http(),
 		[optimismSepolia.id]: http(),
 		[foundry.id]: http(),
+		[avalancheFuji.id]: http(),
 	},
 });
 
