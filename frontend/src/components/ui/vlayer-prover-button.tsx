@@ -16,13 +16,12 @@ export const VlayerButton = ({ className }: { className?: string }) => {
     isCallProverIdle,
     result,
     error,
-    handleMint
+    handleMint,
+    isMinting
   } = useVlayer();
 
   useEffect(() => {
     console.log('web proof ', webProof, 'isCallProverIdle ', isCallProverIdle);
-    // Automatically call the prover if webProof is available and the prover is idle
-    // This is useful for testing purposes, but you might want to remove it in production
     try{
     if (webProof && isCallProverIdle) {
         console.log("Calling prover with webProof and address:", webProof, address);
@@ -33,10 +32,14 @@ export const VlayerButton = ({ className }: { className?: string }) => {
     }
   }, [webProof, address, callProver, isCallProverIdle]);
 
-  useEffect(() => {
-    console.log("Proving result:", result);
-  }, [result]);
 
+  useEffect(() => {
+    if( isMinting) return;
+    if (result) {
+      console.log("Proving result:", result);
+      handleMint();
+    }
+  }, [result, handleMint,isMinting]); 
  
 
   useEffect(() => {
@@ -57,14 +60,6 @@ export const VlayerButton = ({ className }: { className?: string }) => {
         >
           {isPending ? "Proving in progress..." : "Update CEX balance"}
         </button>
-         {webProof && (
-            <button
-                className="mt-4"
-                onClick={() => handleMint()}
-            >
-                Mint
-            </button>
-        )}
       </div>
     );
 };
