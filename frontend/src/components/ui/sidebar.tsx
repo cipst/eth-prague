@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { BanknoteArrowUpIcon, GalleryVerticalEndIcon, HandCoinsIcon, HomeIcon, WaypointsIcon } from "lucide-react";
+import { BanknoteArrowUpIcon, HandCoinsIcon, HomeIcon, WaypointsIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { Collapsible, CollapsibleContent } from "./collapsible";
 import { useState } from "react";
@@ -21,11 +21,6 @@ const links = [
 		title: "Bridge",
 		url: "/bridge",
 		icon: WaypointsIcon,
-	},
-	{
-		title: "Transaction History",
-		url: "/history",
-		icon: GalleryVerticalEndIcon,
 	},
 	{
 		title: "Dividends",
