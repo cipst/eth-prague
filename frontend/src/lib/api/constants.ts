@@ -1,0 +1,1 @@
+export const NETWORK_STATS_REFETCH_INTERVAL = 1000 * 60 * 30;
