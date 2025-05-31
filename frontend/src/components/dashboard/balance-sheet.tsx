@@ -6,6 +6,7 @@ import { NETWORK_STATS_REFETCH_INTERVAL } from "@/lib/api/constants";
 import { Skeleton } from "../ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { VAULT_INFO } from "@/config/vault";
+import { VlayerButton } from "../ui/vlayer-prover-button";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -46,7 +47,7 @@ export const BalanceSheet = () => {
 					<CardTitle>Balance Sheet</CardTitle>
 					{/* <CardDescription>Card Description</CardDescription> */}
 					<CardAction>
-						<Button>Update CEX balance</Button>
+						<Button><VlayerButton/></Button>
 					</CardAction>
 				</CardHeader>
 				<CardContent></CardContent>
