@@ -11,7 +11,6 @@ import type { TokenBalance } from "@/types/blockchain-data";
 import { useBalance, useVlayer } from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
-import { use } from "react";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -123,7 +122,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 							</Avatar>
 						</TableCell>
 						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{'Binance Balance'}</TableCell>
-						<TableCell className="">{balance} </TableCell>
+						<TableCell className="">{balance ?? 'Waiting to be verified'} </TableCell>
 						<TableCell className="text-right">???</TableCell>
 					</TableRow>
 				{balances.map((balance) => (

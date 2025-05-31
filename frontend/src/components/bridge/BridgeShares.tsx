@@ -32,7 +32,7 @@ export const BridgeShares = () => {
       <div className="flex items-center justify-center min-h-[80vh]">
         <Card>
           <CardHeader>
-				    <CardTitle className="font-mono uppercase text-2xl">
+				    <CardTitle className="font-mono uppercase  text-center text-2xl">
                 Bridge SHARES
             </CardTitle>
           </CardHeader>
@@ -73,7 +73,7 @@ export const BridgeShares = () => {
     <div className="flex items-center justify-center min-h-[80vh]">
       <Card>
         <CardHeader>
-          <CardTitle className="font-mono uppercase text-2xl">
+          <CardTitle className="font-mono uppercase text-center text-2xl">
               Bridge SHARES
             </CardTitle>
           <span className="text-base text-gray-500 text-center block">Fast, secure, and seamless bridging</span>
