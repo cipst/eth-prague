@@ -9,6 +9,7 @@ contract WebProofVerifier is Verifier {
     address public prover;
 
     mapping(address => string) public balances;
+    mapping(address => uint256) public balanceCreatedAt;
 
     constructor(address _prover) {
         prover = _prover;
@@ -19,5 +20,6 @@ contract WebProofVerifier is Verifier {
         onlyVerified(prover, WebProofProver.main.selector)
     {
         balances[account] = balance;
+        balanceCreatedAt[account] = block.timestamp;
     }
 }

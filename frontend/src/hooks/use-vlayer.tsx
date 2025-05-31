@@ -24,14 +24,14 @@ const webProofConfig: WebProofConfig<Abi, string> = {
     commitmentArgs: [],
     chainId: 1,
   },
-  logoUrl: "http://twitterswap.com/logo.png",
+  logoUrl: "https://cryptologos.cc/logos/binance-coin-bnb-logo.png?v=029", 
   steps: [
     startPage("https://binance.com", "Go to binance.com login page"),
     expectUrl("https://www.binance.com/it/my/dashboard", "Go to Dahsboard"),
     notarize(
       "https://www.binance.com/bapi/asset/v2/private/asset-service/wallet/balance?quoteAsset=BTC&needBalanceDetail=true&needEuFuture=true",
       "GET",
-      "Generate Proof of Twitter profile",
+      "Generate Proof of Balance of Binance",
       [
         {
           request: {
@@ -195,6 +195,20 @@ export const useBalance = (address: `0x${string}`, refetchTrigger?: any) => {
     address: import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
     abi: WebProofVerifier.abi,
     functionName: "balances",
+    args: [address],
+  });
+
+  // Refetch when refetchTrigger changes
+  useEffect(() => {
+    if (contract.refetch) contract.refetch();
+  }, [refetchTrigger]);
+  return contract;
+};
+export const useBalanceCreatedAt = (address: `0x${string}`, refetchTrigger?: any) => {
+  const contract = useReadContract({
+    address: import.meta.env.VITE_VERIFIER_ADDRESS as `0x${string}`,
+    abi: WebProofVerifier.abi,
+    functionName: "balanceCreatedAt",
     args: [address],
   });
 
