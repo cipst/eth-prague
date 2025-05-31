@@ -1,16 +1,21 @@
 import { cn } from "@/lib/utils";
 import { Button } from "./button";
 import MetamaskLogo from "@/assets/metamask-logo.svg?react";
-import { useMetamask } from "@/lib/contexts/metamask";
-import { useRef } from "react";
+import { useAppKit } from "@reown/appkit/react";
+import { useAccount } from "wagmi";
+
 
 export const MetamaskButton = ({ className }: { className?: string }) => {
-	const { connectWallet, accountAddress } = useMetamask();
-	const btnRef = useRef<HTMLButtonElement>(null);
+	const { open: openWallet } = useAppKit();
+
+	const {address:accountAddress} = useAccount();
+	const connectWallet = async () => {
+		await openWallet();
+	};
 
 	const handleConnectMetamask = async () => {
 		if (!accountAddress) {
-			await connectWallet(btnRef);
+			await connectWallet();
 		}
 	};
 
@@ -18,7 +23,6 @@ export const MetamaskButton = ({ className }: { className?: string }) => {
 		<div className="flex items-center justify-around h-min w-2xs">
 			{!accountAddress ? (
 				<Button
-					ref={btnRef}
 					onClick={handleConnectMetamask}
 					className={cn(className, "bg-[#FF5C16] hover:bg-[#FFA680] hover:text-[#661800]", accountAddress && "hover:bg-[#FF5C16] hover:text-white")}>
 					<MetamaskLogo /> Connect Metamask

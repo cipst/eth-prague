@@ -2,14 +2,16 @@ import { SearchIcon } from "lucide-react";
 import { Separator } from "./separator";
 import { cn } from "@/lib/utils";
 import { MetamaskButton } from "./metamask-button";
-import { useMetamask } from "@/lib/contexts/metamask";
 import { Input } from "./input";
 import { Button } from "./button";
 import { useState } from "react";
 import { VAULT_INFO } from "@/config/vault";
+import { useAccount } from "wagmi";
+import { VlayerButton } from "./vlayer-prover-button";
+
 
 export const Header = ({ className }: { className?: string }) => {
-	const { accountAddress } = useMetamask();
+	const { address: accountAddress } = useAccount();
 	const [searchQuery, setSearchQuery] = useState("");
 
 	const handleSearch = (e: React.FormEvent) => {
@@ -58,6 +60,9 @@ export const Header = ({ className }: { className?: string }) => {
 						Search
 					</Button>
 				</form>
+			</div>
+			<div>
+				<VlayerButton className="mt-7 flex justify-center flex-col items-center" />
 			</div>
 			<div>
 				<MetamaskButton />

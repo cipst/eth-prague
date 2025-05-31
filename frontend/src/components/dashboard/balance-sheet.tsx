@@ -3,6 +3,7 @@ import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from
 import { useChains } from "@/hooks/useChains";
 import { Skeleton } from "../ui/skeleton";
 import { VAULT_INFO } from "@/config/vault";
+import { VlayerButton } from "../ui/vlayer-prover-button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
@@ -69,7 +70,7 @@ export const BalanceSheet = () => {
 				<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
 				{/* <CardDescription>Card Description</CardDescription> */}
 				<CardAction>
-					<Button>Update CEX balance</Button>
+					<Button><VlayerButton/></Button>
 				</CardAction>
 			</CardHeader>
 			<CardContent className="flex gap-10">
