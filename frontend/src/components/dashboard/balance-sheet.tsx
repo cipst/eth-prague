@@ -12,6 +12,8 @@ import { useBalance, useVlayer, useBalanceCreatedAt } from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
 import BlockscoutLogo from "@/assets/blockscout-logo.svg?react";
+import { useReadContract } from "wagmi";
+import { wagmiethereumContractConfig } from "@/config/contracts";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -121,7 +123,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 		<section>
 			<span className="font-mono text-2xl font-semibold">ASSETS</span>
 
-			<Table className="">
+			<Table className="w-xl">
 				<TableCaption>
 					A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s assets
 				</TableCaption>
@@ -130,7 +132,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 						<TableHead></TableHead>
 						<TableHead className=""></TableHead>
 						<TableHead className="">Amount</TableHead>
-						<TableHead className="text-right">USDT</TableHead>
+						{/* <TableHead className="text-right pr-3">$</TableHead> */}
 					</TableRow>
 				</TableHeader>
 				<TableBody>
@@ -142,8 +144,8 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 							</Avatar>
 						</TableCell>
 						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{"Binance Balance"}</TableCell>
-						<TableCell className="">{balance ?? "Waiting to be verified"} </TableCell>
-						<TableCell className="text-right">???</TableCell>
+						<TableCell className="text-lg">{balance ?? "Waiting to be verified"} </TableCell>
+						<TableCell className="text-right font-mono text-lg">???</TableCell>
 					</TableRow>
 					{balances.length > 0 &&
 						balances.map((balance) => (
@@ -155,9 +157,9 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 									</Avatar>
 								</TableCell>
 								<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{balance.token.name}</TableCell>
-								<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
-								<TableCell className="text-right">
-									{((Number(balance.value) / 10 ** Number(balance.token.decimals)) * Number(balance.token.exchange_rate)).toLocaleString()}
+								<TableCell className="text-lg">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
+								<TableCell className="text-right font-mono text-lg">
+									$ {((Number(balance.value) / 10 ** Number(balance.token.decimals)) * Number(balance.token.exchange_rate)).toLocaleString()}
 								</TableCell>
 							</TableRow>
 						))}
@@ -172,8 +174,15 @@ type EquitySectionProps = {
 };
 
 const EquitySection = ({ balances }: EquitySectionProps) => {
-	const totalShares = 1;
-	const totalAssetsValue = 1;
+	const totalAssetsValue = balances.reduce(
+		(prev, current) => (prev += (Number(current.value) / 10 ** Number(current.token.decimals)) * Number(current.token.exchange_rate)),
+		0
+	);
+
+	const { data: totalShares } = useReadContract({
+		...wagmiethereumContractConfig,
+		functionName: "totalShares",
+	});
 
 	return (
 		<section className="min-w-sm">
@@ -187,16 +196,16 @@ const EquitySection = ({ balances }: EquitySectionProps) => {
 				</TableHeader>
 				<TableBody>
 					<TableRow>
-						<TableCell className="font-semibold text-lg">Total shares</TableCell>
-						<TableCell className="text-right">???</TableCell>
+						<TableCell className="font-semibold text-xl">Total shares</TableCell>
+						<TableCell className="text-right text-lg">{totalShares as number}</TableCell>
 					</TableRow>
 					<TableRow>
-						<TableCell className="font-semibold text-lg">Total assets value</TableCell>
-						<TableCell className="text-right">???</TableCell>
+						<TableCell className="font-semibold text-xl">Total assets value</TableCell>
+						<TableCell className="text-right text-lg">{totalAssetsValue.toFixed(2)}</TableCell>
 					</TableRow>
 					<TableRow>
-						<TableCell className="font-semibold text-lg">Book share value</TableCell>
-						<TableCell className="text-right">{totalAssetsValue / totalShares}</TableCell>
+						<TableCell className="font-semibold text-xl">Book share value</TableCell>
+						<TableCell className="text-right text-lg">{totalAssetsValue.toFixed(2) / ((totalShares as number) ?? 1)}</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>

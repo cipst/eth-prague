@@ -19,9 +19,5 @@ export const fetchTokenBalances = async (chains: ChainData[], hash: string): Pro
 
 	balances = results.flat();
 
-	//TODO
-	//IMPORTANT
-	//Add USDT price to every asset in the balance via oracles
-
 	return balances;
 };
