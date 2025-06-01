@@ -59,7 +59,7 @@ export const FundraiserComponent = ({
               onSubmit={handleMint}
             >
               <div className="w-full flex flex-col gap-2">
-                <label className="font-semibold text-lg text-[#5a189a] text-center">
+                <label className="font-semibold text-lg  text-center">
                   Number of Shares to Mint
                 </label>
                 <input
@@ -74,7 +74,7 @@ export const FundraiserComponent = ({
                 />
               </div>
               <div className="w-full flex flex-col gap-2">
-                <label className="font-semibold text-lg text-[#5a189a] text-center">
+                <label className="font-semibold text-lg text-center">
                   Price per Share
                 </label>
                 <input
@@ -90,7 +90,7 @@ export const FundraiserComponent = ({
               </div>
               <Button
                 type="submit"
-                className="w-full text-xl py-3 bg-gradient-to-r from-[#5a189a] to-[#43cea2] text-white font-bold rounded-xl shadow-lg"
+                className="w-full text-xl py-3 text-white font-bold h-12 shadow-lg"
                 disabled={
                   !mintAmount ||
                   !price ||

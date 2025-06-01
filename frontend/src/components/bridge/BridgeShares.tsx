@@ -13,7 +13,7 @@ export const BridgeShares = () => {
   const [ethAmount, setEthAmount] = useState("");
   const [flowAmount, setFlowAmount] = useState("");
 
-  const conversionRate = 1000;
+  const conversionRate = 1;
 
   const handleEthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -150,7 +150,7 @@ export const BridgeShares = () => {
             </div>
           </div>
           <Button
-            className="text-xl flex justify-center items-center mt-4 w-full"
+            className="text-xl h-12 flex justify-center items-center mt-4 w-full"
             onClick={handleBridge}
             disabled={isLoading || !ethAmount || parseFloat(ethAmount) <= 0}
           >

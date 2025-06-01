@@ -155,7 +155,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 						</TableCell>
 						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{"Binance Balance"}</TableCell>
 						<TableCell className="text-lg">{balance ?? "Waiting to be verified"} </TableCell>
-						<TableCell className="text-right font-mono text-lg">$ {balance*104437}</TableCell>
+						<TableCell className="text-right font-mono text-lg">$ {(balance*104437).toFixed(2)}</TableCell>
 					</TableRow>
 					{balances.length > 0 &&
 						balances.map((balance) => (
