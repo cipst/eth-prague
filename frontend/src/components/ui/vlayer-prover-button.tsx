@@ -2,9 +2,7 @@ import { useAccount } from "wagmi";
 import { useEffect, useState } from "react";
 import { useVlayer } from "@/hooks/use-vlayer";
 
-
 export const VlayerButton = ({ className }: { className?: string }) => {
-    
   const { address } = useAccount();
   const [disabled, setDisabled] = useState(false);
 
@@ -21,45 +19,52 @@ export const VlayerButton = ({ className }: { className?: string }) => {
   } = useVlayer();
 
   useEffect(() => {
-    console.log('web proof ', webProof, 'isCallProverIdle ', isCallProverIdle);
-    try{
-    if (webProof && isCallProverIdle) {
-        console.log("Calling prover with webProof and address:", webProof, address);
-      callProver([webProof, address]);
-    }
-}catch (e) {
-    console.error("Error calling prover:", e);
+    try {
+      if (webProof && isCallProverIdle) {
+        void callProver([webProof, address]);
+      }
+    } catch (e) {
+      console.error("Error calling prover:", e);
     }
   }, [webProof, address, callProver, isCallProverIdle]);
 
-
   useEffect(() => {
-    if( isMinting) return;
+    if (isMinting) return;
     if (result) {
-      console.log("Proving result:", result);
       handleMint();
     }
-  }, [result, handleMint,isMinting]); 
- 
+  }, [result, handleMint, isMinting]);
 
   useEffect(() => {
     if (error) {
-    //   throw error;
+      // handle error if needed
     }
   }, [error]);
 
-    return (
-       <div className={`flex justify-center flex-col items-center${className ? ` ${className}` : ""}`}>
-        <button
-          disabled={disabled}
-          id="nextButton"
-          onClick={() => {
+  const canMint = !!result && !isMinting;
+
+  return (
+    <div className={`flex justify-center flex-col items-center${className ? ` ${className}` : ""}`}>
+      <button
+        disabled={disabled || isPending || isMinting}
+        id="nextButton"
+        onClick={() => {
+          if (canMint) {
+            handleMint();
+          } else {
             requestWebProof();
             setDisabled(true);
-          }}
-        >
-          {isPending ? "Proving in progress..." : "Update CEX balance"}
-        </button>
-      </div>
-    );
+          }
+        }}
+      >
+        {isMinting
+          ? "Minting..."
+          : isPending
+          ? "Proving in progress..."
+          : canMint
+          ? "Mint"
+          : "Update CEX balance"}
+      </button>
+    </div>
+  );
 };

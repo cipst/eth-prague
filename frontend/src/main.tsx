@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import { Home } from "./pages/home";
 import { WagmiProvider, http, createConfig } from "wagmi";
-import { baseSepolia, sepolia, optimismSepolia, foundry, avalancheFuji} from "wagmi/chains";
+import { baseSepolia, sepolia, optimismSepolia, foundry, avalancheFuji,mainnet} from "wagmi/chains";
 import { metaMask } from "wagmi/connectors";
 import { createAppKit } from "@reown/appkit/react";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
@@ -50,9 +50,10 @@ queryClient.prefetchQuery({
 });
 
 const wagmiConfig = createConfig({
-	chains: [baseSepolia, sepolia, optimismSepolia, foundry,avalancheFuji],
+	chains: [baseSepolia, sepolia, optimismSepolia, foundry,avalancheFuji,mainnet],
 	connectors: [metaMask()],
 	transports: {
+		[mainnet.id]: http(),
 		[baseSepolia.id]: http(),
 		[sepolia.id]: http(),
 		[optimismSepolia.id]: http(),
