@@ -37,10 +37,10 @@ export const Sidebar = ({ className }: { className?: string }) => {
 	const location = useLocation();
 
 	return (
-		<nav className={cn("border w-xs h-full", className)}>
-			<section className="w-full h-60 bg-gray-500 flex items-center justify-center">
-				<AddressIcon />
-				<span>
+		<nav className={cn("border w-sm h-full", className)}>
+			<section className="w-full h-30 flex items-center justify-center gap-3">
+				<AddressIcon className="rounded-full bg-green-500" />
+				<span className="text-2xl font-semibold">
 					{(location.pathname.includes("info") ? FAKE_VAULT_INFO : VAULT_INFO).address.slice(0, 10)}...{(location.pathname.includes("info") ? FAKE_VAULT_INFO : VAULT_INFO).address.slice(-4)}
 				</span>
 			</section>
