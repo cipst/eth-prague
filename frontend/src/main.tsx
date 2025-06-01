@@ -17,6 +17,7 @@ import { getChainSpecs } from "@vlayer/sdk";
 import { TransactionPopupProvider } from "@blockscout/app-sdk";
 import { Bridge } from "./pages/bridge";
 import { Fundraise } from "./pages/Fundraise";
+import { FakeVaultInfo } from "./pages/info";
 
 const router = createBrowserRouter([
 	{
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
 				path: "fundraise",
 				Component: Fundraise
 			},
+			{
+				path: "info",
+				Component: FakeVaultInfo
+			}
 		],
 	},
 ]);

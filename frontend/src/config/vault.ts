@@ -7,3 +7,9 @@ export const VAULT_INFO: VaultInfo = {
 	address: "0x9BdA63D2F68AeC5AB0832FF13448aa5972D3b3B3",
 	company_name: "Acme Company",
 };
+
+
+export const FAKE_VAULT_INFO: VaultInfo = {
+	address: "0x4e68Ccd3E89f51C3074ca5072bbAC773960dFa36",
+	company_name: "BipBip Company",
+};

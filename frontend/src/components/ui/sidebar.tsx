@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { BanknoteArrowUpIcon, HandCoinsIcon, HomeIcon, WaypointsIcon } from "lucide-react";
+import { BanknoteArrowUpIcon, HomeIcon, WaypointsIcon } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { Collapsible, CollapsibleContent } from "./collapsible";
 import { useState } from "react";
@@ -7,7 +7,7 @@ import { useChains } from "@/hooks/useChains";
 import { Skeleton } from "./skeleton";
 import { SUPPORTED_CHAINS_ID } from "@/config/chain";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
-import { VAULT_INFO } from "@/config/vault";
+import { FAKE_VAULT_INFO, VAULT_INFO } from "@/config/vault";
 import { AddressIcon } from "./address-icon";
 import { TransactionHistoryButton } from "./transaction-history-button";
 
@@ -34,13 +34,14 @@ export const Sidebar = ({ className }: { className?: string }) => {
 	const { pathname } = useLocation();
 	const [isOpen, setIsOpen] = useState(false);
 	const { data: chains } = useChains();
+	const location = useLocation();
 
 	return (
 		<nav className={cn("border w-xs h-full", className)}>
 			<section className="w-full h-60 bg-gray-500 flex items-center justify-center">
 				<AddressIcon />
 				<span>
-					{VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}
+					{(location.pathname.includes("info") ? FAKE_VAULT_INFO : VAULT_INFO).address.slice(0, 10)}...{(location.pathname.includes("info") ? FAKE_VAULT_INFO : VAULT_INFO).address.slice(-4)}
 				</span>
 			</section>
 			<section className="flex flex-col gap-5 px-4">

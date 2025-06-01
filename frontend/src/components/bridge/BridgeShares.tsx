@@ -2,17 +2,18 @@ import { useState } from "react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { Skeleton } from "../ui/skeleton";
-import { Loader2, ArrowDown } from "lucide-react";
+import { Loader2, ArrowDown, CheckCircle2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import FlowLogo from "@/assets/flow-logo.jpg";
 import EthLogo from "@/assets/ethereum-eth-logo.png";
 
 export const BridgeShares = () => {
   const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [ethAmount, setEthAmount] = useState("");
   const [flowAmount, setFlowAmount] = useState("");
 
-  const conversionRate = 1000; 
+  const conversionRate = 1000;
 
   const handleEthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -23,8 +24,15 @@ export const BridgeShares = () => {
 
   const handleBridge = async () => {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setIsSuccess(false);
+    await new Promise((resolve) => setTimeout(resolve, 10000));
     setIsLoading(false);
+    setIsSuccess(true);
+    setTimeout(() => {
+      setIsSuccess(false);
+      setEthAmount("");
+      setFlowAmount("");
+    }, 2000);
   };
 
   if (isLoading) {
@@ -32,14 +40,14 @@ export const BridgeShares = () => {
       <div className="flex items-center justify-center min-h-[80vh]">
         <Card>
           <CardHeader>
-				    <CardTitle className="font-mono uppercase  text-center text-2xl">
-                Bridge SHARES
+            <CardTitle className="font-mono uppercase  text-center text-2xl">
+              Bridge SHARES
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="bg-white rounded-xl shadow p-8 flex flex-col gap-4 items-center">
               <Skeleton className="w-48 h-8 mb-4" />
-              {Array.from({ length: 1}).map((_, i) => (
+              {Array.from({ length: 1 }).map((_, i) => (
                 <div key={i} className="flex items-center gap-4 mb-2 w-full justify-center">
                   <Skeleton className="rounded-full w-12 h-12" />
                   <Skeleton className="w-32 h-7" />
@@ -69,13 +77,33 @@ export const BridgeShares = () => {
     );
   }
 
+  if (isSuccess) {
+    return (
+      <div className="flex items-center justify-center min-h-[80vh]">
+        <Card>
+          <CardHeader>
+            <CardTitle className="font-mono uppercase text-center text-2xl">
+              Bridge SHARES
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center gap-4 py-12">
+              <CheckCircle2 className="w-16 h-16 text-green-500" />
+              <span className="text-2xl font-semibold text-green-600">Transaction successfully completed!</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center justify-center min-h-[80vh]">
       <Card>
         <CardHeader>
           <CardTitle className="font-mono uppercase text-center text-2xl">
-              Bridge SHARES
-            </CardTitle>
+            Bridge SHARES
+          </CardTitle>
           <span className="text-base text-gray-500 text-center block">Fast, secure, and seamless bridging</span>
         </CardHeader>
         <CardContent>
@@ -121,7 +149,7 @@ export const BridgeShares = () => {
               />
             </div>
           </div>
-            <Button
+          <Button
             className="text-xl flex justify-center items-center mt-4 w-full"
             onClick={handleBridge}
             disabled={isLoading || !ethAmount || parseFloat(ethAmount) <= 0}

@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 import { Card, CardAction, CardContent, CardFooter, CardHeader, CardTitle } from "../ui/card";
 import { useChains } from "@/hooks/useChains";
 import { Skeleton } from "../ui/skeleton";
-import { VAULT_INFO } from "@/config/vault";
+import { FAKE_VAULT_INFO, VAULT_INFO } from "@/config/vault";
 import { VlayerButton } from "../ui/vlayer-prover-button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -18,7 +18,7 @@ import { wagmiethereumContractConfig } from "@/config/contracts";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
-	const { data: balances, error, isLoading, isError, isFetching, isPending } = useTokenBalances(chains, VAULT_INFO.address);
+	const { data: balances, error, isLoading, isError, isFetching, isPending } = useTokenBalances(chains, FAKE_VAULT_INFO.address);
 
 	const { address } = useAccount();
 	const { status } = useVlayer();
@@ -79,23 +79,6 @@ export const BalanceSheet = () => {
 			<Card className="w-max">
 				<CardHeader>
 					<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
-					{/* <CardDescription>Card Description</CardDescription> */}
-					<CardAction>
-						<Button>
-							<VlayerButton />
-						</Button>
-						<p className="text-sm text-gray-500">
-							{balanceCreatedAt ? (
-								<>
-									{"Last updated: " + new Date(Number(balanceCreatedAt) * 1000).toLocaleDateString()}
-									<br />
-									at {new Date(Number(balanceCreatedAt) * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-								</>
-							) : (
-								"please verify"
-							)}
-						</p>
-					</CardAction>
 				</CardHeader>
 				<CardContent className="flex gap-10">
 					<AssetsSection balances={balances} />
@@ -135,7 +118,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 
 			<Table className="w-xl">
 				<TableCaption>
-					A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s assets
+					A list of {FAKE_VAULT_INFO.address.slice(0, 10)}...{FAKE_VAULT_INFO.address.slice(-4)}'s assets
 				</TableCaption>
 				<TableHeader>
 					<TableRow>
@@ -146,19 +129,8 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					<TableRow key={"binance"}>
-						<TableCell>
-							<Avatar>
-								<AvatarImage src={BinanceLogo} />
-								<AvatarFallback>BINANCE</AvatarFallback>
-							</Avatar>
-						</TableCell>
-						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{"Binance Balance"}</TableCell>
-						<TableCell className="text-lg">{balance ?? "Waiting to be verified"} </TableCell>
-						<TableCell className="text-right font-mono text-lg">???</TableCell>
-					</TableRow>
 					{balances.length > 0 &&
-						balances.map((balance) => (
+						balances.slice(0,4).map((balance) => (
 							<TableRow key={balance.token.name}>
 								<TableCell>
 									<Avatar>

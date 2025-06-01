@@ -5,31 +5,24 @@ import { MetamaskButton } from "./metamask-button";
 import { Input } from "./input";
 import { Button } from "./button";
 import { useEffect, useState } from "react";
-import { VAULT_INFO } from "@/config/vault";
+import { FAKE_VAULT_INFO, VAULT_INFO } from "@/config/vault";
 import { useAccount } from "wagmi";
 import { VlayerButton } from "./vlayer-prover-button";
 import { useBalance } from "@/hooks/use-vlayer";
+import { useLocation, useNavigate } from "react-router";
 
 export const Header = ({ className }: { className?: string }) => {
 	const { address: accountAddress } = useAccount();
 	const [searchQuery, setSearchQuery] = useState("");
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const handleSearch = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!searchQuery.trim()) return;
 
-		// Determine if the search query is a block number, transaction hash, or address
-		if (/^\d+$/.test(searchQuery)) {
-			// TODO complete this
-		} else if (searchQuery.startsWith("0x") && searchQuery.length === 66) {
-			// TODO complete this
-		} else if (searchQuery.startsWith("0x") && searchQuery.length === 42) {
-			// TODO complete this
-		} else {
-			// Handle invalid search query
-			console.error("Invalid search query");
-			alert("Invalid search query");
-		}
+		// Navigate to the search results page with the query
+		navigate("/info");
 	};
 
 	const { data:balance } = useBalance(accountAddress as `0x${string}`);
@@ -48,7 +41,7 @@ export const Header = ({ className }: { className?: string }) => {
 				{accountAddress && (
 					<>
 						<h3 className="cursor-pointer group inline-flex h-9 w-max items-center justify-center rounded-md bg-white px-4 py-2 text-lg font-medium transition-colors hover:bg-gray-100 hover:text-gray-900 focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50">
-							{VAULT_INFO.company_name}
+							{location.pathname.includes("info") ? FAKE_VAULT_INFO.company_name : VAULT_INFO.company_name}
 						</h3>
 						<Separator orientation="vertical" className="bg-black data-[orientation=vertical]:h-10" />
 					</>

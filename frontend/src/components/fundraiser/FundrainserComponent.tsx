@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/card";
 import { Button } from "../ui/button";
-import { Loader2 } from "lucide-react";
+import { ExternalLink, Loader2 } from "lucide-react";
 import { useAccount } from "wagmi";
 
 export const FundraiserComponent = ({
@@ -14,7 +14,8 @@ export const FundraiserComponent = ({
   const [step, setStep] = useState<"form" | "loading" | "progress">("form");
   const [mintAmount, setMintAmount] = useState("");
   const [price, setPrice] = useState("");
-  const [sold, setSold] = useState(sharesSold);
+  // Hardcode sold to 0
+  const sold = 0;
   const { address } = useAccount();
 
   // Check localStorage for this address
@@ -36,7 +37,6 @@ export const FundraiserComponent = ({
     }
     // Simulate async minting
     setTimeout(() => {
-      setSold((prev) => prev + Number(mintAmount));
       setStep("progress");
     }, 1800);
   };
@@ -114,20 +114,20 @@ export const FundraiserComponent = ({
             <div className="flex flex-col items-center gap-6 w-[350px] mx-auto">
               <div className="w-full flex flex-col items-center">
                 <span className="font-semibold text-lg text-[#5a189a] mb-2">
-                  Shares Sold: {sold} / {totalShares}
+                  Shares Sold: 0 / {totalShares}
                 </span>
                 <div className="w-full bg-gray-200 rounded-full h-6 overflow-hidden">
                   <div
                     className="bg-gradient-to-r from-[#5a189a] to-[#43cea2] h-6 transition-all"
-                    style={{ width: `${percent}%` }}
+                    style={{ width: `0%` }}
                   />
                 </div>
                 <span className="mt-2 font-mono text-base text-gray-700">
-                  {percent.toFixed(1)}% of shares sold
+                  0.0% of shares sold
                 </span>
               </div>
-              <div className="text-center text-gray-500 mt-4">
-                Thank you for participating in the fundraiser!
+              <div className="flex items-center gap-2 text-md text-gray-600 underline cursor-pointer">
+                Share this link <ExternalLink className="w-5 h-5" />
               </div>
             </div>
           )}
