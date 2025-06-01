@@ -8,7 +8,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useTokenBalances } from "@/hooks/useTokenBalances";
 import type { TokenBalance } from "@/types/blockchain-data";
-import { useBalance, useVlayer ,useBalanceCreatedAt} from "@/hooks/use-vlayer";
+import { useBalance, useVlayer, useBalanceCreatedAt } from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
 
@@ -16,8 +16,8 @@ export const BalanceSheet = () => {
 	const { data: chains } = useChains();
 	const { data: balances, error, isLoading, isError, isFetching, isPending } = useTokenBalances(chains);
 
-const { address } = useAccount();
-	const {status} = useVlayer();
+	const { address } = useAccount();
+	const { status } = useVlayer();
 
 	const { data: balanceCreatedAt } = useBalanceCreatedAt(address as `0x${string}`, status);
 	if (isLoading || isFetching || isPending) {
@@ -76,17 +76,19 @@ const { address } = useAccount();
 				<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
 				{/* <CardDescription>Card Description</CardDescription> */}
 				<CardAction>
-					<Button><VlayerButton/></Button>
+					<Button>
+						<VlayerButton />
+					</Button>
 					<p className="text-sm text-gray-500">
-					  {balanceCreatedAt ? (
-						<>
-						  {'Last updated: ' + new Date(Number(balanceCreatedAt) * 1000).toLocaleDateString()}
-						  <br />
-						  at {new Date(Number(balanceCreatedAt) * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-						</>
-					  ) : (
-						'please verify'
-					  )}
+						{balanceCreatedAt ? (
+							<>
+								{"Last updated: " + new Date(Number(balanceCreatedAt) * 1000).toLocaleDateString()}
+								<br />
+								at {new Date(Number(balanceCreatedAt) * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+							</>
+						) : (
+							"please verify"
+						)}
 					</p>
 				</CardAction>
 			</CardHeader>
@@ -108,53 +110,57 @@ type AssetsSectionProps = {
 
 const AssetsSection = ({ balances }: AssetsSectionProps) => {
 	const { address } = useAccount();
-	const {status} = useVlayer();
+	const { status } = useVlayer();
 
 	const { data: balance } = useBalance(address as `0x${string}`, status);
-	
-	return (<section>
-		<span className="font-mono text-2xl font-semibold">ASSETS</span>
-		
-		<Table className="">
-			<TableCaption>
-				A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s assets
-			</TableCaption>
-			<TableHeader>
-				<TableRow>
-					<TableHead></TableHead>
-					<TableHead className=""></TableHead>
-					<TableHead className="">Amount</TableHead>
-					<TableHead className="text-right">USDT</TableHead>
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				<TableRow key={'binance'}>
+
+	return (
+		<section>
+			<span className="font-mono text-2xl font-semibold">ASSETS</span>
+
+			<Table className="">
+				<TableCaption>
+					A list of {VAULT_INFO.address.slice(0, 10)}...{VAULT_INFO.address.slice(-4)}'s assets
+				</TableCaption>
+				<TableHeader>
+					<TableRow>
+						<TableHead></TableHead>
+						<TableHead className=""></TableHead>
+						<TableHead className="">Amount</TableHead>
+						<TableHead className="text-right">USDT</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow key={"binance"}>
 						<TableCell>
 							<Avatar>
 								<AvatarImage src={BinanceLogo} />
 								<AvatarFallback>BINANCE</AvatarFallback>
 							</Avatar>
 						</TableCell>
-						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{'Binance Balance'}</TableCell>
-						<TableCell className="">{balance ?? 'Waiting to be verified'} </TableCell>
+						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{"Binance Balance"}</TableCell>
+						<TableCell className="">{balance ?? "Waiting to be verified"} </TableCell>
 						<TableCell className="text-right">???</TableCell>
 					</TableRow>
-				{balances.map((balance) => (
-					<TableRow key={balance.token.name}>
-						<TableCell>
-							<Avatar>
-								<AvatarImage src={balance.token.icon_url} />
-								<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-							</Avatar>
-						</TableCell>
-						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{balance.token.name}</TableCell>
-						<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
-						<TableCell className="text-right">???</TableCell>
-					</TableRow>
-				))}
-			</TableBody>
-		</Table>
-	</section>)
+					{balances.map((balance) => (
+						<TableRow key={balance.token.name}>
+							<TableCell>
+								<Avatar>
+									<AvatarImage src={balance.token.icon_url} />
+									<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+								</Avatar>
+							</TableCell>
+							<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{balance.token.name}</TableCell>
+							<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
+							<TableCell className="text-right">
+								{((Number(balance.value) / 10 ** Number(balance.token.decimals)) * Number(balance.token.exchange_rate)).toLocaleString()}
+							</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+		</section>
+	);
 };
 
 type EquitySectionProps = {

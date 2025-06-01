@@ -4,6 +4,7 @@ export interface TokenBalance {
 		name: string;
 		decimals: string;
 		symbol: string;
+		exchange_rate: string;
 	};
 	value: string;
 }
