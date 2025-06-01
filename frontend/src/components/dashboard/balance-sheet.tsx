@@ -11,6 +11,7 @@ import type { TokenBalance } from "@/types/blockchain-data";
 import { useBalance, useVlayer, useBalanceCreatedAt } from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
+import BlockscoutLogo from "@/assets/blockscout-logo.svg?react";
 
 export const BalanceSheet = () => {
 	const { data: chains } = useChains();
@@ -98,7 +99,9 @@ export const BalanceSheet = () => {
 				<EquitySection balances={balances} />
 			</CardContent>
 			<CardFooter>
-				<p>Card Footer</p>
+				<p className="flex items-center gap-2">
+					Powered by Blockscout <BlockscoutLogo className="w-7 h-7" />
+				</p>
 			</CardFooter>
 		</Card>
 	);
@@ -142,21 +145,22 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 						<TableCell className="">{balance ?? "Waiting to be verified"} </TableCell>
 						<TableCell className="text-right">???</TableCell>
 					</TableRow>
-					{balances.map((balance) => (
-						<TableRow key={balance.token.name}>
-							<TableCell>
-								<Avatar>
-									<AvatarImage src={balance.token.icon_url} />
-									<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
-								</Avatar>
-							</TableCell>
-							<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{balance.token.name}</TableCell>
-							<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
-							<TableCell className="text-right">
-								{((Number(balance.value) / 10 ** Number(balance.token.decimals)) * Number(balance.token.exchange_rate)).toLocaleString()}
-							</TableCell>
-						</TableRow>
-					))}
+					{balances.length > 0 &&
+						balances.map((balance) => (
+							<TableRow key={balance.token.name}>
+								<TableCell>
+									<Avatar>
+										<AvatarImage src={balance.token.icon_url} />
+										<AvatarFallback>{balance.token.name.slice(0, 2).toUpperCase()}</AvatarFallback>
+									</Avatar>
+								</TableCell>
+								<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{balance.token.name}</TableCell>
+								<TableCell className="">{(Number(balance.value) / 10 ** Number(balance.token.decimals)).toLocaleString()}</TableCell>
+								<TableCell className="text-right">
+									{((Number(balance.value) / 10 ** Number(balance.token.decimals)) * Number(balance.token.exchange_rate)).toLocaleString()}
+								</TableCell>
+							</TableRow>
+						))}
 				</TableBody>
 			</Table>
 		</section>
