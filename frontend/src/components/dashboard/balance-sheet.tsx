@@ -12,6 +12,7 @@ import { useBalance, useVlayer, useBalanceCreatedAt } from "@/hooks/use-vlayer";
 import { useAccount } from "wagmi";
 import BinanceLogo from "@/assets/logoBinance.png";
 import BlockscoutLogo from "@/assets/blockscout-logo.svg?react";
+import BlockscoutLogoWhite from "@/assets/blockscout-logo-white.svg?react";
 import { useReadContract } from "wagmi";
 import { wagmiethereumContractConfig } from "@/config/contracts";
 
@@ -74,38 +75,47 @@ export const BalanceSheet = () => {
 		return <div>{error.message}</div>;
 	}
 	return (
-		<Card className="w-max">
-			<CardHeader>
-				<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
-				{/* <CardDescription>Card Description</CardDescription> */}
-				<CardAction>
-					<Button>
-						<VlayerButton />
-					</Button>
-					<p className="text-sm text-gray-500">
-						{balanceCreatedAt ? (
-							<>
-								{"Last updated: " + new Date(Number(balanceCreatedAt) * 1000).toLocaleDateString()}
-								<br />
-								at {new Date(Number(balanceCreatedAt) * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-							</>
-						) : (
-							"please verify"
-						)}
-					</p>
-				</CardAction>
-			</CardHeader>
-			<CardContent className="flex gap-10">
-				<AssetsSection balances={balances} />
+		<div className="flex flex-col justify-center">
+			<Card className="w-max">
+				<CardHeader>
+					<CardTitle className="font-mono uppercase text-3xl">Balance Sheet</CardTitle>
+					{/* <CardDescription>Card Description</CardDescription> */}
+					<CardAction>
+						<Button>
+							<VlayerButton />
+						</Button>
+						<p className="text-sm text-gray-500">
+							{balanceCreatedAt ? (
+								<>
+									{"Last updated: " + new Date(Number(balanceCreatedAt) * 1000).toLocaleDateString()}
+									<br />
+									at {new Date(Number(balanceCreatedAt) * 1000).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+								</>
+							) : (
+								"please verify"
+							)}
+						</p>
+					</CardAction>
+				</CardHeader>
+				<CardContent className="flex gap-10">
+					<AssetsSection balances={balances} />
 
-				<EquitySection balances={balances} />
-			</CardContent>
-			<CardFooter>
-				<p className="flex items-center gap-2">
-					Powered by Blockscout <BlockscoutLogo className="w-7 h-7" />
-				</p>
-			</CardFooter>
-		</Card>
+					<EquitySection balances={balances} />
+				</CardContent>
+				<CardFooter>
+					<p className="flex items-center gap-2">
+						Powered by Blockscout <BlockscoutLogo className="w-7 h-7" />
+					</p>
+				</CardFooter>
+			</Card>
+			<a
+				href={`https://eth.blockscout.com/address/${VAULT_INFO.address}`}
+				target="_blank"
+				rel="noopener noreferrer"
+				className="flex items-center gap-2 justify-center rounded-bl-lg rounded-br-lg w-1/2 mx-auto bg-[#5353D3] h-8 text-lg text-white font-semibold">
+				Check on Blockscout <BlockscoutLogoWhite className="w-7 h-7" />
+			</a>
+		</div>
 	);
 };
 
