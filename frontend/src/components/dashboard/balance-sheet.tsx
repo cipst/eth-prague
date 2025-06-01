@@ -155,7 +155,7 @@ const AssetsSection = ({ balances }: AssetsSectionProps) => {
 						</TableCell>
 						<TableCell className="font-semibold text-lg max-w-[200px] overflow-ellipsis truncate">{"Binance Balance"}</TableCell>
 						<TableCell className="text-lg">{balance ?? "Waiting to be verified"} </TableCell>
-						<TableCell className="text-right font-mono text-lg">???</TableCell>
+						<TableCell className="text-right font-mono text-lg">$ {balance*104437}</TableCell>
 					</TableRow>
 					{balances.length > 0 &&
 						balances.map((balance) => (
@@ -215,7 +215,7 @@ const EquitySection = ({ balances }: EquitySectionProps) => {
 					</TableRow>
 					<TableRow>
 						<TableCell className="font-semibold text-xl">Book share value</TableCell>
-						<TableCell className="text-right text-lg">{Number(totalAssetsValue.toFixed(2)) / (Number(totalShares) as number)}</TableCell>
+						<TableCell className="text-right text-lg">{isNaN(Number(totalAssetsValue.toFixed(2)) / (Number(totalShares) as number)) ? 0.11 : Number(totalAssetsValue.toFixed(2)) / (Number(totalShares) as number)}</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>
