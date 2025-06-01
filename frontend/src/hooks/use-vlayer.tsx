@@ -83,7 +83,7 @@ export const useVlayer = () => {
     proverAbi: webProofProver.abi,
     chainId: chain?.id,
     functionName: "main",
-    gasLimit: Number(import.meta.env.VITE_GAS_LIMIT),
+    gasLimit: 800000, // Adjust gas limit as needed
   };
 
   const {
@@ -95,6 +95,7 @@ export const useVlayer = () => {
   } = useCallProver(vlayerProverConfig);
 
   if (callProverError) {
+    console.error("Call Prover Error:", callProverError);
     // throw callProverError;
   }
 
@@ -152,10 +153,10 @@ export const useVlayer = () => {
   }, [proverResult]);
 
   const handleMint = async () => {
-    setIsMinting(true);
     if (!proverResult) {
       return;
     }
+    setIsMinting(true);
 
     const proofData = JSON.parse(proverResult) as Parameters<
       typeof writeContract
