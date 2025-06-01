@@ -39,7 +39,7 @@ export const Sidebar = ({ className }: { className?: string }) => {
 	return (
 		<nav className={cn("border w-sm h-full", className)}>
 			<section className="w-full h-30 flex items-center justify-center gap-3">
-				<AddressIcon className="rounded-full bg-green-500" />
+				<img src={location.pathname.includes("info")?FAKE_VAULT_INFO.logo:VAULT_INFO.logo} alt="Logo" className="w-14 h-14 rounded-full" />
 				<span className="text-2xl font-semibold">
 					{(location.pathname.includes("info") ? FAKE_VAULT_INFO : VAULT_INFO).address.slice(0, 10)}...{(location.pathname.includes("info") ? FAKE_VAULT_INFO : VAULT_INFO).address.slice(-4)}
 				</span>

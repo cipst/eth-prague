@@ -92,7 +92,7 @@ export const BalanceSheet = () => {
 				</CardFooter>
 			</Card>
 			<a
-				href={`https://eth.blockscout.com/address/${VAULT_INFO.address}`}
+				href={`https://eth.blockscout.com/address/${FAKE_VAULT_INFO.address}`}
 				target="_blank"
 				rel="noopener noreferrer"
 				className="flex items-center gap-2 justify-center rounded-bl-lg rounded-br-lg w-1/2 mx-auto bg-[#5353D3] h-8 text-lg text-white font-semibold">

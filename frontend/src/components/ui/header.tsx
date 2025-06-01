@@ -10,6 +10,7 @@ import { useAccount } from "wagmi";
 import { VlayerButton } from "./vlayer-prover-button";
 import { useBalance } from "@/hooks/use-vlayer";
 import { useLocation, useNavigate } from "react-router";
+import DeComLogo from "@/assets/DeCom_logo.webp";
 
 export const Header = ({ className }: { className?: string }) => {
 	const { address: accountAddress } = useAccount();
@@ -36,7 +37,7 @@ export const Header = ({ className }: { className?: string }) => {
 				"flex z-50 shadow-[0px_4px_6px_0px_rgba(0,_0,_0,_0.17)] fixed w-full items-center justify-between h-24 px-4 py-3 gap-10 bg-white border-b border-b-gray-500",
 				className
 			)}>
-			<h1 className="font-bold uppercase text-5xl">DeCom</h1>
+			<h1 className="font-bold uppercase text-5xl flex items-center gap-2"><img src={DeComLogo} className="w-14 h-14 rounded-full" />DeCom</h1>
 			<div className="flex gap-2 items-center h-full">
 				{accountAddress && (
 					<>
