@@ -15,8 +15,8 @@ const deploy: DeployFunction = async (hre) => {
 	console.log(`Network: ${hre.network.name}`);
 	console.log(`Deployer: ${deployer}`);
 
-	const sepoliaLzEndpoint = "0x6EDCE65403992e310A62460808c4b910D972f10f";
-	const assetInSepoliaAddress = "0x47DDDBed77094498E1E52118F3c07a52A1884C28"; // linked to Stefano account
+	const sepoliaLzEndpoint = "0x1a44076050125825900e736c501f859c50fE728c"; // ETHEREUM MAINNET LayerZero V2 ENDPOINT
+	const assetInSepoliaAddress = "0xAf1fB6B242b42c9406Cf9f039400B8a1C06185F4"; // Address MyToken
 
 	const { address } = await deploy(contractName, {
 		from: deployer,

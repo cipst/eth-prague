@@ -1,10 +1,46 @@
 import { EndpointId } from "@layerzerolabs/lz-definitions";
-const avalanche_testnetContract = {
-    eid: EndpointId.AVALANCHE_V2_TESTNET,
-    contractName: "MyOFT"
+const ethereum_mainnetContract = {
+	eid: EndpointId.ETHEREUM_V2_MAINNET,
+	contractName: "DecomToken",
 };
-const sepolia_testnetContract = {
-    eid: EndpointId.SEPOLIA_V2_TESTNET,
-    contractName: "MyOFT"
+
+const flow_mainnetContract = {
+	eid: EndpointId.FLOW_V2_MAINNET,
+	contractName: "MyOFT",
 };
-export default { contracts: [{ contract: avalanche_testnetContract }, { contract: sepolia_testnetContract }], connections: [{ from: avalanche_testnetContract, to: sepolia_testnetContract, config: { sendLibrary: "0x69BF5f48d2072DfeBc670A1D19dff91D0F4E8170", receiveLibraryConfig: { receiveLibrary: "0x819F0FAF2cb1Fba15b9cB24c9A2BDaDb0f895daf", gracePeriod: 0 }, sendConfig: { executorConfig: { maxMessageSize: 10000, executor: "0xa7BFA9D51032F82D649A501B6a1f922FC2f7d4e3" }, ulnConfig: { confirmations: 4, requiredDVNs: ["0x9f0e79Aeb198750F963b6f30B99d87c6EE5A0467"], optionalDVNs: [], optionalDVNThreshold: 0 } }, receiveConfig: { ulnConfig: { confirmations: 2, requiredDVNs: ["0x9f0e79Aeb198750F963b6f30B99d87c6EE5A0467"], optionalDVNs: [], optionalDVNThreshold: 0 } } } }, { from: sepolia_testnetContract, to: avalanche_testnetContract, config: { sendLibrary: "0xcc1ae8Cf5D3904Cef3360A9532B477529b177cCE", receiveLibraryConfig: { receiveLibrary: "0xdAf00F5eE2158dD58E0d3857851c432E34A3A851", gracePeriod: 0 }, sendConfig: { executorConfig: { maxMessageSize: 10000, executor: "0x718B92b5CB0a5552039B593faF724D182A881eDA" }, ulnConfig: { confirmations: 2, requiredDVNs: ["0x8eebf8b423B73bFCa51a1Db4B7354AA0bFCA9193"], optionalDVNs: [], optionalDVNThreshold: 0 } }, receiveConfig: { ulnConfig: { confirmations: 4, requiredDVNs: ["0x8eebf8b423B73bFCa51a1Db4B7354AA0bFCA9193"], optionalDVNs: [], optionalDVNThreshold: 0 } } } }] };
+
+export default {
+	contracts: [{ contract: ethereum_mainnetContract }, { contract: flow_mainnetContract }],
+	connections: [
+		{
+			from: ethereum_mainnetContract,
+			to: flow_mainnetContract,
+			config: {
+				sendLibrary: "0xbB2Ea70C9E858123480642Cf96acbcCE1372dCe1",
+				receiveLibraryConfig: { receiveLibrary: "0xc02Ab410f0734EFa3F14628780e6e695156024C2", gracePeriod: 0 },
+				sendConfig: {
+					executorConfig: { maxMessageSize: 10000, executor: "0x173272739Bd7Aa6e4e214714048a9fE699453059" },
+					ulnConfig: { confirmations: 15, requiredDVNs: ["0x747C741496a507E4B404b50463e691A8d692f6Ac"], optionalDVNs: [], optionalDVNThreshold: 0 },
+				},
+				receiveConfig: {
+					ulnConfig: { confirmations: 20, requiredDVNs: ["0x747C741496a507E4B404b50463e691A8d692f6Ac"], optionalDVNs: [], optionalDVNThreshold: 0 },
+				},
+			},
+		},
+		{
+			from: flow_mainnetContract,
+			to: ethereum_mainnetContract,
+			config: {
+				sendLibrary: "0xe1844c5D63a9543023008D332Bd3d2e6f1FE1043",
+				receiveLibraryConfig: { receiveLibrary: "0x2367325334447C5E1E0f1b3a6fB947b262F58312", gracePeriod: 0 },
+				sendConfig: {
+					executorConfig: { maxMessageSize: 10000, executor: "0xa20DB4Ffe74A31D17fc24BD32a7DD7555441058e" },
+					ulnConfig: { confirmations: 20, requiredDVNs: ["0x9C061c9A4782294eeF65ef28Cb88233A987F4bdD"], optionalDVNs: [], optionalDVNThreshold: 0 },
+				},
+				receiveConfig: {
+					ulnConfig: { confirmations: 15, requiredDVNs: ["0x9C061c9A4782294eeF65ef28Cb88233A987F4bdD"], optionalDVNs: [], optionalDVNThreshold: 0 },
+				},
+			},
+		},
+	],
+};

@@ -12,6 +12,7 @@ import "@nomiclabs/hardhat-ethers";
 import "@layerzerolabs/toolbox-hardhat";
 import { HardhatUserConfig, HttpNetworkAccountsUserConfig } from "hardhat/types";
 import "./tasks/send";
+import "./tasks/receive";
 
 import { EndpointId } from "@layerzerolabs/lz-definitions";
 
@@ -66,6 +67,16 @@ const config: HardhatUserConfig = {
 		"sepolia-testnet": {
 			eid: EndpointId.SEPOLIA_V2_TESTNET,
 			url: process.env.SEPOLIA_ETH_RPC,
+			accounts,
+		},
+		"ethereum-mainnet": {
+			eid: EndpointId.ETHEREUM_V2_MAINNET,
+			url: process.env.ETHEREUM_MAINNET_RPC_URL,
+			accounts,
+		},
+		"flow-mainnet": {
+			eid: EndpointId.FLOW_V2_MAINNET,
+			url: process.env.FLOW_MAINNET_RPC_URL,
 			accounts,
 		},
 		hardhat: {
